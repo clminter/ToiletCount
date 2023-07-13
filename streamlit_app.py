@@ -37,7 +37,7 @@ def calculate_toilets(population, levels, level_populations, multipliers, level_
     }
 
 def main():
-    st.title(" 🚻 POPULOUS RESTROOM BOT")
+    st.title(" 🚻 STADIA RESTROOM BOT")
     st.write(" ⚠️ Stadium and Arena fixture calculations based on IBC 2021 Assembly Classification  ⚠️ ")
     st.write("A MINTER 🤖")
 
