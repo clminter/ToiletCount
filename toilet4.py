@@ -1,6 +1,12 @@
 import streamlit as st
 import math
 
+
+def calculate_wheelchair_seating(total_population):
+    wheelchair_seating = math.ceil((total_population - 5000) / 200) + 36
+    return wheelchair_seating
+
+
 def calculate_toilets(population, levels, level_populations, multipliers, level_multipliers, men_percentage):
     men_population = population * men_percentage / 100
     women_population = population - men_population
@@ -36,25 +42,36 @@ def calculate_toilets(population, levels, level_populations, multipliers, level_
         "Women Lavatories": women_lavatories_per_level
     }
 
+
 def main():
-    st.title(" 🚻 POPULOUS RESTROOM BOT")
+    st.title(" 🚻♿ STADIA FIXTURE & ADA BOT")
     st.write(" ⚠️ Stadium and Arena fixture calculations based on IBC 2021 Assembly Classification  ⚠️ ")
     st.write("A MINTER 🤖")
 
-    population = st.number_input("Enter the total population", min_value=1, value=100)
-    men_percentage = st.slider("Percentage of Men", 0, 100, 50, 5)
-   
-    levels = st.number_input("Enter the number of levels in the building", min_value=1, value=1)
+    instructions = {
+        "Select an option": "",
+        "Instructions": "NOTE: THIS CALCULATOR IS FOR SEATING BOWL POPULATION ONLY. CALCULATE ADDITIONAL OCCUPANCIES AS REQUIRED BY LOCAL JURISDICTION FOR TOILET COUNTS.\n1. Enter the total population.\n2. Enter the number of levels in the building.\n3. Enter the name and population of each level.\n4. Adjust the fixture type multipliers if needed.\n5. Set the percentage of men.\n6. Click the 'Calculate' button.\n7. The toilet and wheelchair seating requirements will be displayed.",
+        "Example": "For example, if the total population is 1000, there are 3 levels in the building, and the populations for each level are 400, 300, and 300 respectively, you would enter:\n- Total population: 1000\n- Number of levels: 3\n- Level 1 name: Level A\n- Level 1 population: 400\n- Level 2 name: Level B\n- Level 2 population: 300\n- Level 3 name: Level C\n- Level 3 population: 300\nThen click the 'Calculate' button to see the toilet and wheelchair seating requirements.",
+    }
 
-    level_names = []
+    selected_option = st.sidebar.selectbox("Instructions", list(instructions.keys()))
+
+    if selected_option != "Select an option":
+        st.sidebar.markdown(instructions[selected_option])
+
+    population = st.number_input("Enter the total population", min_value=1, value=100)
+    levels = st.number_input("Enter the number of levels in the building", min_value=1, value=1)
     level_populations = []
     level_multipliers = []
+    level_names = []
+    level_names_wheelchair = []
 
     with st.sidebar:
         st.subheader("Level Names and Populations")
         for i in range(levels):
             level_name = st.text_input(f"Enter the name of Level {i+1}")
             level_names.append(level_name)
+            level_names_wheelchair.append(level_name)
 
             level_percentage = st.empty()
             level_pop = st.number_input(f"Enter the population on Level {i+1}", min_value=1, value=1)
@@ -64,7 +81,9 @@ def main():
             level_multiplier = st.slider(f"Enter the PREMIUM multiplier for Level {i+1}", 1.0, 3.0, 1.0, 0.25)
             level_multipliers.append(level_multiplier)
 
-    with st.expander("Fixture Type Multipliers: Adjust to increase over Code"):
+    calculate = st.button("Calculate")
+
+    if calculate:
         multipliers = {
             "Men Urinals": st.slider("Men Urinals Multiplier", 1.0, 5.0, 1.0, 0.1),
             "Men Lavatories": st.slider("Men Lavatories Multiplier", 1.0, 5.0, 1.0, 0.1),
@@ -73,7 +92,8 @@ def main():
             "Women Lavatories": st.slider("Women Lavatories Multiplier", 1.0, 5.0, 1.0, 0.1)
         }
 
-    if st.button("Calculate"):
+        men_percentage = st.slider("Percentage of Men", 0, 100, 50, 5)
+
         result = calculate_toilets(population, levels, level_populations, multipliers, level_multipliers, men_percentage)
 
         col1, col2 = st.columns(2)
@@ -101,6 +121,15 @@ def main():
             st.write(f"🚹Total Men Toilets: {total_toilets} (1:{(population // 2) // total_toilets})")
             st.write(f"🚺Total Women Toilets: {total_women_toilets} (1:{(population // 2) // total_women_toilets})")
             st.write(f"🚺Total Women Lavatories: {total_women_lavatories} (1:{(population // 2) // total_women_lavatories})")
+
+            total_population = sum(level_populations)
+            wheelchair_seating = calculate_wheelchair_seating(total_population)
+            wheelchair_distribution = [math.ceil(wheelchair_seating * (level_populations[i] / total_population)) for i in range(levels)]
+
+            st.subheader("Wheelchair Distribution:")
+            for i in range(levels):
+                st.write(f"♿{level_names_wheelchair[i]}: {wheelchair_distribution[i]}")
+
 
 if __name__ == "__main__":
     main()

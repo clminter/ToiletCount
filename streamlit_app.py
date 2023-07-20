@@ -59,8 +59,8 @@ def main():
     if selected_option != "Select an option":
         st.sidebar.markdown(instructions[selected_option])
 
-    population = st.number_input("Enter the total population", min_value=1, value=100)
-    levels = st.number_input("Enter the number of levels in the building", min_value=1, value=1)
+    population = st.sidebar.number_input("Enter the total population", min_value=1, value=100)
+    levels = st.sidebar.number_input("Enter the number of levels in the building", min_value=1, value=1)
     level_populations = []
     level_multipliers = []
     level_names = []
@@ -81,18 +81,17 @@ def main():
             level_multiplier = st.slider(f"Enter the PREMIUM multiplier for Level {i+1}", 1.0, 3.0, 1.0, 0.25)
             level_multipliers.append(level_multiplier)
 
-    if st.button("Calculate"):
-        multipliers = {
-            "Men Urinals": st.slider("Men Urinals Multiplier", 1.0, 5.0, 1.0, 0.1),
-            "Men Lavatories": st.slider("Men Lavatories Multiplier", 1.0, 5.0, 1.0, 0.1),
-            "Men Toilets": st.slider("Men Toilets Multiplier", 1.0, 5.0, 1.0, 0.1),
-            "Women Toilets": st.slider("Women Toilets Multiplier", 1.0, 5.0, 1.0, 0.1),
-            "Women Lavatories": st.slider("Women Lavatories Multiplier", 1.0, 5.0, 1.0, 0.1)
-        }
+    toilet_multipliers = {
+        "Men Urinals": st.sidebar.slider("Men Urinals Multiplier", 1.0, 5.0, 1.0, 0.1),
+        "Men Lavatories": st.sidebar.slider("Men Lavatories Multiplier", 1.0, 5.0, 1.0, 0.1),
+        "Men Toilets": st.sidebar.slider("Men Toilets Multiplier", 1.0, 5.0, 1.0, 0.1),
+        "Women Toilets": st.sidebar.slider("Women Toilets Multiplier", 1.0, 5.0, 1.0, 0.1),
+        "Women Lavatories": st.sidebar.slider("Women Lavatories Multiplier", 1.0, 5.0, 1.0, 0.1)
+    }
+    men_percentage = st.sidebar.slider("Percentage of Men", 0, 100, 50, 5)
 
-        men_percentage = st.slider("Percentage of Men", 0, 100, 50, 5)
-
-        result = calculate_toilets(population, levels, level_populations, multipliers, level_multipliers, men_percentage)
+    if st.sidebar.button("Calculate"):
+        result = calculate_toilets(population, levels, level_populations, toilet_multipliers, level_multipliers, men_percentage)
 
         col1, col2 = st.columns(2)
 
