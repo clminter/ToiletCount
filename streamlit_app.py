@@ -50,7 +50,7 @@ def main():
 
     instructions = {
         "Select an option": "",
-        "Instructions": "NOTE: THIS CALCULATOR IS FOR SEATING BOWL POPULATION ONLY. CALCUATE ADDITIONAL OCCUPANCIES AS REQUIRED BY LOCAL JURISDICTION FOR TOILET COUNTS.\n1. Enter the total population.\n2. Enter the number of levels in the building.\n3. Enter the name and population of each level.\n4. Adjust the fixture type multipliers if needed.\n5. Set the percentage of men.\n6. Click the 'Calculate' button.\n7. The toilet and wheelchair seating requirements will be displayed.",
+        "Instructions": "NOTE: THIS CALCULATOR IS FOR SEATING BOWL POPULATION ONLY. CALCULATE ADDITIONAL OCCUPANCIES AS REQUIRED BY LOCAL JURISDICTION FOR TOILET COUNTS.\n1. Enter the total population.\n2. Enter the number of levels in the building.\n3. Enter the name and population of each level.\n4. Adjust the fixture type multipliers if needed.\n5. Set the percentage of men.\n6. Click the 'Calculate' button.\n7. The toilet and wheelchair seating requirements will be displayed.",
         "Example": "For example, if the total population is 1000, there are 3 levels in the building, and the populations for each level are 400, 300, and 300 respectively, you would enter:\n- Total population: 1000\n- Number of levels: 3\n- Level 1 name: Level A\n- Level 1 population: 400\n- Level 2 name: Level B\n- Level 2 population: 300\n- Level 3 name: Level C\n- Level 3 population: 300\nThen click the 'Calculate' button to see the toilet and wheelchair seating requirements.",
     }
 
